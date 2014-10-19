@@ -1,0 +1,122 @@
+Sending Special Keys
+====================
+b.send_keys :enter
+b.element.send_keys [:control, 'a'], :backspace
+
+ScreenShot
+===================
+browser.screenshot.save 'screenshot.png'
+browser.screenshot.png
+browser.screenshot.base64
+
+Embed Screenshot
+===================
+browser.screenshot.save 'screenshot.png'
+embed 'screenshot.png', 'image/png'
+
+Page Load Time
+==================
+
+b.goto 'http://watir.com'
+load_secs = b.performance.summary[:response_time]/1000
+puts "Load Time: #{load_secs} seconds."
+
+
+Browser Alerts
+==================
+browser.alert.exists?
+browser.alert.text
+browser.alert.ok
+browser.alert.close
+
+Get Browser Name
+================
+b = Watir::Browser.new :chrome
+browser.driver.browser #=> :chrome
+
+
+Browser Cookie
+==============================
+browser.cookies.clear
+browser.cookies.add 'foo', 'bar', :path => "/", :expires => 10.days.from_now, :secure => true
+browser.cookies.delete 'foo'
+browser.cookies.to_a
+
+
+Basic Browser Authentication
+===============================
+b = Watir::Browser.start 'http://admin:password@yourwebsite.com'
+
+Browser Popup
+=============================
+browser.window(:title => "annoying popup").use do
+  browser.button(:id => "close").click
+end
+
+Explicit Wait
+=================
+Watir::Wait.until { ... }  Ex: Watir::Wait.until { b.text.include? 'Thank you' }
+object.when_present.set:
+object.wait_until_present: Ex: object.wait_while_present:
+object.wait_while_present:
+
+Implicit Wait
+==================
+b.driver.manage.timeouts.implicit_wait = 3
+
+Chrome:
+==================
+profile = Selenium::WebDriver::Chrome::Profile.new
+profile['download.prompt_for_download'] = false
+profile['download.default_directory'] = "/path/to/dir"
+b = Watir::Browser.new :chrome, :profile => profile
+
+Switch Example
+===================
+b = Watir::Browser.new :chrome, :switches => %w[--ignore-certificate-errors --disable-popup-blocking --disable-translate]
+
+Filed Entry Example
+====================
+Text
+=====
+t = b.text_field :id => 'entry_0'
+t.exists?
+t.set 'your name'
+t.value
+
+DropDown/List
+=============
+s = b.select_list :id => 'entry_1'
+s.select 'Ruby'
+
+Radio
+=========
+
+r = b.label(:text => 'What is ruby?').parent.radio :value => 'A gem'
+r.exists?
+r.set
+r.set?
+
+Check Box
+===========
+c = b.label(:text => 'What versions of ruby?').parent.checkbox :value => '1.9.2'
+c.exists?
+c.set
+c.set?
+
+Button
+===========
+btn = b.button :value => 'Submit'
+btn.exists?
+btn.click
+
+Link
+======
+l = b.link :text => 'Google Docs'
+l.exists?
+l.click
+
+Frame And iFrame
+======================================
+b.frame(:id => "content_ifr").send_keys "hello world"
+
